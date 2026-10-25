@@ -1,19 +1,17 @@
 #pragma once
 
 #include "command.h"
+#include "entity.h"
 #include "pt_math.h"
 #include <cstdint>
 #include <span>
-
-constexpr float PLAYER_SPEED = 300;
-constexpr float PLAYER_RADIUS = 14;
+#include <vector>
 
 struct world
 {
-  vec2 PlayerPrevPosition;
-  vec2 PlayerCurrPosition;
-  vec2 MoveIntent;
   rect Arena;
+  std::vector<entity> Entities;
+  int PlayerIndex = -1;
   uint64_t Tick = 0;
 };
 

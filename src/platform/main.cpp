@@ -7,6 +7,7 @@
 #include "app.h"
 #include "core/loop.h"
 #include "game/command.h"
+#include "game/entity.h"
 #include "game/world.h"
 #include "platform/input.h"
 #include "pt_math.h"
@@ -47,8 +48,9 @@ static void UpdateDrawFrame(void *Args)
     TakeTickCommands(State.Input, State.Commands);
     TickWorld(State.World, State.Commands);
   }
-  vec2 Position = Vec2Lerp(State.World.PlayerPrevPosition, State.World.PlayerCurrPosition, LoopAlpha(State.LoopState));
-  DrawCircleV(Vector2{ .x = Position.X, .y = Position.Y }, PLAYER_RADIUS, BLUE);
+  entity &Player = State.World.Entities[State.World.PlayerIndex];
+  vec2 Position = Vec2Lerp(Player.Transform.PrevPosition, Player.Transform.CurrPosition, LoopAlpha(State.LoopState));
+  DrawCircleV(Vector2{ .x = Position.X, .y = Position.Y }, Player.Transform.Radius, BLUE);
   DrawText(std::to_string(State.TickPerSecond).c_str(), 10, 10, 50, WHITE);
   EndDrawing();
 }
