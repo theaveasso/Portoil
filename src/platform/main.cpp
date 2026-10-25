@@ -1,21 +1,28 @@
 #include <cstdlib>
-#include <iostream>
 
 #include <raylib.h>
 #include <string>
+#include <vector>
 
 #include "app.h"
 #include "core/loop.h"
-#include "game/ball.h"
+#include "game/command.h"
+#include "game/world.h"
+#include "platform/input.h"
+#include "pt_math.h"
 
 #if defined(PT_PLATFORM_WEB)
 #include <emscripten/emscripten.h>
 #endif
 
+constexpr int MAX_COMMANDS = 8;
+
 struct frame_state
 {
   loop_state LoopState = {};
-  ball Ball = {};
+  world World = {};
+  input_frame Input = {};
+  std::vector<command> Commands;
   int TickCounted = 0;
   int TickPerSecond = 0;
   float SecondTimer = 0;
@@ -35,23 +42,26 @@ static void UpdateDrawFrame(void *Args)
     State.TickCounted = 0;
     State.SecondTimer -= 1;
   }
-
-  const bounds Bounds = { .Left = 0, .Right = static_cast<float>(GetScreenWidth()), .Top = 0, .Bottom = static_cast<float>(GetScreenHeight()) };
-  for (int Index = 0; Index < Tick; ++Index) { TickBall(State.Ball, Bounds, FIXED_TIMESTEP); }
-  vec2 BallPosition = GetBallRenderPos(State.Ball, LoopAlpha(State.LoopState));
-  DrawCircleV(Vector2{ .x = BallPosition.X, .y = BallPosition.Y }, State.Ball.Radius, BLUE);
+  GatherInput(State.Input);
+  for (int Index = 0; Index < Tick; ++Index) {
+    TakeTickCommands(State.Input, State.Commands);
+    TickWorld(State.World, State.Commands);
+  }
+  vec2 Position = Vec2Lerp(State.World.PlayerPrevPosition, State.World.PlayerCurrPosition, LoopAlpha(State.LoopState));
+  DrawCircleV(Vector2{ .x = Position.X, .y = Position.Y }, PLAYER_RADIUS, BLUE);
   DrawText(std::to_string(State.TickPerSecond).c_str(), 10, 10, 50, WHITE);
   EndDrawing();
 }
 
 int main()
 {
-  std::cout << "PORTOIL!" << "\n";
   const app_def AppDef = { .TargetFPS = 60 };
   InitApp(&AppDef);
 
   frame_state State;
-  State.Ball.CurrPosition = { .X = static_cast<float>(GetScreenWidth()) / 2, .Y = static_cast<float>(GetScreenHeight()) / 2 };
+  world_def WorldDef = { .Width = GetScreenWidth(), .Height = GetScreenHeight() };
+  InitWorld(&WorldDef, State.World);
+  State.Commands.reserve(MAX_COMMANDS);
 #if defined(PT_PLATFORM_WEB)
   emscripten_set_main_loop_arg(UpdateDrawFrame, &State, 0, true);
 #else

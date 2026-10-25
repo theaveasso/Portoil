@@ -1,2 +1,5 @@
-add_library(pt_core STATIC loop.cpp loop.h pt_math.h)
+file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS *.cpp)
+file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS *.h)
+
+add_library(pt_core STATIC ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(pt_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

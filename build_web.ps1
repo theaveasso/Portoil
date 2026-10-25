@@ -7,5 +7,5 @@ if (-not $env:EMSDK) { & C:\emsdk\emsdk_env.ps1 | Out-Null }
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 if ($Run) {
-    emrun --port $Port build/web/bin/portoil.html
+    emrun --port $Port build/web/bin/index.html
 }
