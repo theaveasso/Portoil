@@ -5,8 +5,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-include(LeisCompiler)
+find_package(raylib CONFIG REQUIRED)
 
-add_executable(portoil src/main.cpp)
-pt_target_options(portoil)
+add_executable(portoil src/platform/app.cpp src/platform/main.cpp)
+target_link_libraries(portoil PRIVATE raylib)
+
+target_compile_features(portoil PUBLIC cxx_std_20)
+
+if(MSVC)
+  target_compile_options(portoil PRIVATE /W4 /EHs-c- /GR-)
+  target_compile_definitions(portoil PRIVATE _HAS_EXCEPTIONS=0)
+endif()
