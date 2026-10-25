@@ -1,0 +1,19 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+max_line_length = 120
+
+# PowerShell: your build.ps1 already uses 4 spaces; Windows tools expect CRLF
+[*.ps1]
+indent_size = 4
+end_of_line = crlf
+
+# Markdown uses two trailing spaces as a line break
+[*.md]
+trim_trailing_whitespace = false
