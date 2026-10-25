@@ -2,7 +2,6 @@
 #include "pt_math.h"
 
 constexpr double MAX_FRAME_SECONDS = 0.25;
-constexpr double FIXED_TIMESTEP = 1. / 60.;
 
 int LoopAdvance(loop_state &State, double FrameSeconds)
 {

@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+constexpr double FIXED_TIMESTEP = 1. / 60.;
+
 struct loop_state
 {
   double Accumlator;
