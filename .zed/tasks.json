@@ -1,11 +1,34 @@
 [
   {
-     "label": "build & run",
-     "command": "powershell",
-     "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command",
-              "./build.ps1 -Preset debug; if ($LASTEXITCODE -eq 0) { Set-Location build/debug/bin; ./portoil.exe }"],
-     "cwd": "$ZED_WORKTREE_ROOT",
-     "reveal": "always",
-     "allow_concurrent_runs": false
-   }
+    "label": "build",
+    "command": "powershell",
+    "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "./build.ps1 -Preset debug"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "allow_concurrent_runs": false
+  },
+  {
+    "label": "build & run",
+    "command": "powershell",
+    "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "./build.ps1 -Preset debug -Run"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "allow_concurrent_runs": false
+  },
+  {
+    "label": "build web",
+    "command": "powershell",
+    "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "./build_web.ps1"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "allow_concurrent_runs": false
+  },
+  {
+    "label": "build & run web",
+    "command": "powershell",
+    "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "./build_web.ps1 -Run"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "allow_concurrent_runs": false
+  }
 ]

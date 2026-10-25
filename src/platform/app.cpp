@@ -18,8 +18,12 @@ static app &GetApp()
 void InitApp(const app_def *Def)
 {
   assert(!GetApp().IsInitialized);
+  SetConfigFlags(FLAG_WINDOW_RESIZABLE);
   InitWindow(Def->Width, Def->Height, Def->Title);
+
+#if not defined(PT_PLATFORM_WEB)
   SetTargetFPS(Def->TargetFPS);
+#endif
   GetApp().IsInitialized = true;
 }
 

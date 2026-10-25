@@ -8,6 +8,10 @@
 #include "core/loop.h"
 #include "game/ball.h"
 
+#if defined(PT_PLATFORM_WEB)
+#include <emscripten/emscripten.h>
+#endif
+
 struct frame_state
 {
   loop_state LoopState = {};
@@ -17,6 +21,29 @@ struct frame_state
   float SecondTimer = 0;
 };
 
+static void UpdateDrawFrame(void *Args)
+{
+  frame_state &State = *static_cast<frame_state *>(Args);
+  BeginDrawing();
+  ClearBackground(BLACK);
+
+  int Tick = LoopAdvance(State.LoopState, GetFrameTime());
+  State.TickCounted += Tick;
+  State.SecondTimer += GetFrameTime();
+  if (State.SecondTimer > 1) {
+    State.TickPerSecond = State.TickCounted;
+    State.TickCounted = 0;
+    State.SecondTimer -= 1;
+  }
+
+  const bounds Bounds = { .Left = 0, .Right = static_cast<float>(GetScreenWidth()), .Top = 0, .Bottom = static_cast<float>(GetScreenHeight()) };
+  for (int Index = 0; Index < Tick; ++Index) { TickBall(State.Ball, Bounds, FIXED_TIMESTEP); }
+  vec2 BallPosition = GetBallRenderPos(State.Ball, LoopAlpha(State.LoopState));
+  DrawCircleV(Vector2{ .x = BallPosition.X, .y = BallPosition.Y }, State.Ball.Radius, BLUE);
+  DrawText(std::to_string(State.TickPerSecond).c_str(), 10, 10, 50, WHITE);
+  EndDrawing();
+}
+
 int main()
 {
   std::cout << "PORTOIL!" << "\n";
@@ -25,26 +52,11 @@ int main()
 
   frame_state State;
   State.Ball.CurrPosition = { .X = static_cast<float>(GetScreenWidth()) / 2, .Y = static_cast<float>(GetScreenHeight()) / 2 };
-  while (!AppShouldClose()) {
-    BeginDrawing();
-    ClearBackground(BLACK);
-
-    int Tick = LoopAdvance(State.LoopState, GetFrameTime());
-    State.TickCounted += Tick;
-    State.SecondTimer = GetFrameTime();
-    if (State.SecondTimer > 1) {
-      State.TickPerSecond = State.TickCounted;
-      State.TickCounted = 0;
-      State.SecondTimer -= 1;
-    }
-
-    const bounds Bounds = { .Left = 0, .Right = static_cast<float>(GetScreenWidth()), .Top = 0, .Bottom = static_cast<float>(GetScreenHeight()) };
-    for (int Index = 0; Index < Tick; ++Index) { TickBall(State.Ball, Bounds, FIXED_TIMESTEP); }
-    vec2 BallPosition = GetBallRenderPos(State.Ball, LoopAlpha(State.LoopState));
-    DrawCircleV(Vector2{ .x = BallPosition.X, .y = BallPosition.Y }, State.Ball.Radius, BLUE);
-    DrawText(std::to_string(State.TickPerSecond).c_str(), 10, 10, 50, WHITE);
-    EndDrawing();
-  }
+#if defined(PT_PLATFORM_WEB)
+  emscripten_set_main_loop_arg(UpdateDrawFrame, &State, 0, true);
+#else
+  while (!AppShouldClose()) { UpdateDrawFrame(&State); }
+#endif
 
   ShutdownApp();
   return EXIT_SUCCESS;

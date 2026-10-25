@@ -1,4 +1,4 @@
-param([string]$Preset = "debug", [string]$Target = "portoil")
+param([string]$Preset = "debug", [switch]$Run)
 $ErrorActionPreference = "Stop"
 
 if (-not $env:VSCMD_VER) {
@@ -13,5 +13,13 @@ if (-not (Test-Path "build/$Preset/build.ninja")) {
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
-cmake --build --preset $Preset --target $Target
+cmake --build --preset $Preset
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+if ($Run) {
+    Push-Location build/${Preset}/bin
+    ./portoil.exe
+    Pop-Location
+}
+
 exit $LASTEXITCODE
