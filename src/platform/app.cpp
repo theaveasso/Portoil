@@ -3,8 +3,6 @@
 #include <cassert>
 #include <raylib.h>
 
-constexpr int FPS = 60;
-
 struct app
 {
   bool IsInitialized = false;
@@ -20,7 +18,7 @@ void InitApp(const app_def *Def)
 {
   assert(!GetApp().IsInitialized);
   InitWindow(Def->Width, Def->Height, Def->Title);
-  SetTargetFPS(FPS);
+  SetTargetFPS(Def->TargetFPS);
   GetApp().IsInitialized = true;
 }
 

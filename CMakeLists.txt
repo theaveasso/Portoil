@@ -7,8 +7,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(raylib CONFIG REQUIRED)
 
+add_subdirectory(src/core)
+
 add_executable(portoil src/platform/app.cpp src/platform/main.cpp)
-target_link_libraries(portoil PRIVATE raylib)
+target_include_directories(portoil PUBLIC src)
+target_link_libraries(portoil PRIVATE pt_core raylib)
 
 target_compile_features(portoil PUBLIC cxx_std_20)
 
