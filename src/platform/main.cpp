@@ -18,13 +18,14 @@
 #include <emscripten/emscripten.h>
 #endif
 
+constexpr int WINDOW_WIDTH = 1280;
+constexpr int WINDOW_HEIGHT = 720;
+constexpr const char *APP_TITLE = "LanternWatch";
+constexpr const int TARGET_FPS = 60;
+
 constexpr int MAX_COMMANDS = 8;
 
-#if defined(PT_PLATFORM_WEB)
-constexpr int PLAYER_COUNT = 1;
-#else
-constexpr int PLAYER_COUNT = 4;
-#endif
+constexpr int PLAYER_COUNT = 3;
 
 struct frame_state
 {
@@ -105,7 +106,7 @@ static void UpdateDrawFrame(void *Args)
 
 int main()
 {
-  const app_def AppDef = { .TargetFPS = 60 };
+  const app_def AppDef = { .Width = WINDOW_WIDTH, .Height = WINDOW_HEIGHT, .Title = APP_TITLE, .TargetFPS = TARGET_FPS };
   InitApp(&AppDef);
 
   frame_state State;
