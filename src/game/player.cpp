@@ -38,7 +38,7 @@ entity CreatePlayer(vec2 Position)
   Result.Mover = { .Speed = PLAYER_SPEED };
   Result.Dasher = { .Speed = DASH_SPEED, .Cooldown = DASH_COOLDOWN };
   Result.Health = { .Hp = PLAYER_MAX_HEALTH, .MaxHp = PLAYER_MAX_HEALTH, .InvulnTimer = PLAYER_INVULN_WINDOW };
-  Result.Shooter = { .AimDir = { .X = 1 }, .Cooldown = FIRE_COOLDOWN, .BulletSpeed = PROJECTILE_SPEED };
+  Result.Shooter = { .AimDir = { .X = 1 }, .BulletSpeed = PROJECTILE_SPEED, .Cooldown = FIRE_COOLDOWN };
   Result.State = PLAYER_STATE_ALIVE;
   Result.NextState = PLAYER_STATE_ALIVE;
   Result.Update = UpdatePlayer;
