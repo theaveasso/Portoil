@@ -23,6 +23,9 @@ uint64_t GetWorldChecksum(const world &World)
 {
   uint64_t Hash = FNV_OFFSET;
   Mix(Hash, static_cast<uint32_t>(World.Tick));
+  Mix(Hash, static_cast<uint32_t>(World.Hearth.Hp));
+  Mix(Hash, World.Hearth.Position);
+  Mix(Hash, World.Rng.State);
   for (const entity &Entity : World.Entities) {
     Mix(Hash, Entity.Transform.CurrPosition);
     Mix(Hash, Entity.State);

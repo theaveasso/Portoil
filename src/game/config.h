@@ -24,6 +24,9 @@ constexpr float BLEED_OUT_TIME = 15.F;
 constexpr float REVIVE_TIME = 2.F;
 constexpr float REVIVE_RANGE = 48.F;
 
+constexpr int HEARTH_MAX_HP = 20;
+constexpr float HEARTH_RADIUS = 22.F;
+
 constexpr int MAX_ENTITIES = 64;
 constexpr int MAX_PROJECTILES = 256;
 constexpr int MAX_PLAYERS = 4;

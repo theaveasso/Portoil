@@ -8,17 +8,19 @@
 #include <cassert>
 #include <numbers>
 
-static constexpr float SPAWN_RADIUS = 100.F;
+static constexpr float SPAWN_RADIUS = 110.F;
 
 void InitWorld(const world_def *Def, world &World)
 {
   assert(Def->PlayerCount >= 1 && Def->PlayerCount <= MAX_PLAYERS);
+  const vec2 Center = { .X = static_cast<float>(Def->Width) / 2.F, .Y = static_cast<float>(Def->Height) / 2.F };
   World.Arena = rect{ .X = 0, .Y = 0, .Width = static_cast<float>(Def->Width), .Height = static_cast<float>(Def->Height) };
   World.Entities.reserve(MAX_ENTITIES);
   World.PlayerCount = Def->PlayerCount;
+  World.Hearth = { .Hp = HEARTH_MAX_HP, .MaxHp = HEARTH_MAX_HP, .Position = Center };
+  World.Rng = { .State = Def->Seed };
   for (int Index = 0; Index < Def->PlayerCount; ++Index) {
     const float Angle = static_cast<float>(Index) / static_cast<float>(Def->PlayerCount) * 2.F * static_cast<float>(std::numbers::pi);
-    const vec2 Center = { .X = static_cast<float>(Def->Width) / 2.F, .Y = static_cast<float>(Def->Height) / 2.F };
     const vec2 Offset = Vec2Mul({ .X = std::cos(Angle), .Y = std::sin(Angle) }, SPAWN_RADIUS);
     World.Entities.push_back(CreatePlayer(Vec2Add(Center, Offset)));
   }

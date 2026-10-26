@@ -93,13 +93,8 @@ static void UpdateDrawFrame(void *Args)
     vec2 ItemPosition = Vec2Lerp(Item.PrevPosition, Item.CurrPosition, LoopAlpha(State.LoopState));
     DrawCircleV(Vector2{ .x = ItemPosition.X, .y = ItemPosition.Y }, PROJECTILE_RADIUS, RED);
   }
-  const float Scale = 2;
-  int Frame = static_cast<int>(GetTime() * 8) % 4;
-  Rectangle Source = SPRITE_RECTS[SPRITE_KNIGHT_M_RUN_ANIM_F0 + Frame];
-  vec2 Feet = { .X = 640, .Y = 360 };
-  Rectangle Dest = { .x = Feet.X, .y = Feet.Y, .width = Source.width * Scale, .height = Source.height * Scale };
-  Vector2 Origin = { .x = Dest.width / 2, .y = Dest.height };// bottom centre of the sprite
-  DrawTexturePro(State.Atlas, Source, Dest, Origin, 0, WHITE);
+
+  DrawCircleV(Vector2{ .x = State.World.Hearth.Position.X, .y = State.World.Hearth.Position.Y }, 50, YELLOW);
   EndMode2D();
   EndDrawing();
 }
