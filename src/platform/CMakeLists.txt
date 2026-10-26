@@ -1,7 +1,7 @@
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS *.cpp)
 file(GLOB_RECURSE HEADER_FILES CONFIGURE_DEPENDS *.h)
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES})
+target_sources(${PROJECT_NAME} PRIVATE ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(${PROJECT_NAME} PUBLIC src)
 target_link_libraries(${PROJECT_NAME} PRIVATE pt_core pt_game raylib)
 

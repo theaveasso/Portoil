@@ -10,6 +10,7 @@
 #include "input.h"
 #include "loop.h"
 #include "pt_math.h"
+#include "sprite_atlas.h"
 #include "world.h"
 #include <cassert>
 
@@ -32,6 +33,7 @@ struct frame_state
 #if not defined(NDEBUG)
   world Shadow = {};
 #endif
+  Texture2D Atlas = {};
   input_frame Input = {};
   std::vector<command> Commands;
   int ControlledPlayer = 0;
@@ -90,6 +92,13 @@ static void UpdateDrawFrame(void *Args)
     vec2 ItemPosition = Vec2Lerp(Item.PrevPosition, Item.CurrPosition, LoopAlpha(State.LoopState));
     DrawCircleV(Vector2{ .x = ItemPosition.X, .y = ItemPosition.Y }, PROJECTILE_RADIUS, RED);
   }
+  const float Scale = 2;
+  int Frame = static_cast<int>(GetTime() * 8) % 4;
+  Rectangle Source = SPRITE_RECTS[SPRITE_KNIGHT_M_RUN_ANIM_F0 + Frame];
+  vec2 Feet = { .X = 640, .Y = 360 };
+  Rectangle Dest = { .x = Feet.X, .y = Feet.Y, .width = Source.width * Scale, .height = Source.height * Scale };
+  Vector2 Origin = { .x = Dest.width / 2, .y = Dest.height };// bottom centre of the sprite
+  DrawTexturePro(State.Atlas, Source, Dest, Origin, 0, WHITE);
   EndMode2D();
   EndDrawing();
 }
@@ -108,6 +117,9 @@ int main()
   InitWorld(&WorldDef, State.Shadow);
 #endif
 
+  State.Atlas = LoadTexture("assets/0x72_dungeon.png");
+  SetTextureFilter(State.Atlas, TEXTURE_FILTER_POINT);
+
   State.Commands.reserve(MAX_COMMANDS);
 #if defined(PT_PLATFORM_WEB)
   emscripten_set_main_loop_arg(UpdateDrawFrame, &State, 0, true);
@@ -115,6 +127,7 @@ int main()
   while (!AppShouldClose()) { UpdateDrawFrame(&State); }
 #endif
 
+  UnloadTexture(State.Atlas);
   ShutdownApp();
   return EXIT_SUCCESS;
 }
