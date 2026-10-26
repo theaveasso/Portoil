@@ -17,12 +17,19 @@
 
 constexpr int MAX_COMMANDS = 8;
 
+#if defined(PT_PLATFORM_WEB)
+constexpr int PLAYER_COUNT = 1;
+#else
+constexpr int PLAYER_COUNT = 4;
+#endif
+
 struct frame_state
 {
   loop_state LoopState = {};
   world World = {};
   input_frame Input = {};
   std::vector<command> Commands;
+  int ControlledPlayer = 0;
   int TickCounted = 0;
   int TickPerSecond = 0;
   float SecondTimer = 0;
@@ -53,17 +60,22 @@ static void UpdateDrawFrame(void *Args)
     State.TickCounted = 0;
     State.SecondTimer -= 1;
   }
-  entity &Player = State.World.Entities[State.World.PlayerIndex];
+
+  if (IsKeyPressed(KEY_TAB)) { State.ControlledPlayer = (State.ControlledPlayer + 1) % State.World.PlayerCount; }
+  entity &Player = State.World.Entities[State.ControlledPlayer];
   GatherInput(State.Input, GetCamera(), Player.Transform.CurrPosition);
   for (int Index = 0; Index < Tick; ++Index) {
-    TakeTickCommands(State.Input, State.Commands);
+    State.Commands.clear();
+    TakeTickCommands(State.Input, State.ControlledPlayer, State.Commands);
     TickWorld(State.World, State.Commands);
   }
-  vec2 Position = Vec2Lerp(Player.Transform.PrevPosition, Player.Transform.CurrPosition, LoopAlpha(State.LoopState));
 
   BeginMode2D(GetCamera());
   DrawRectangleLines(0, 0, ARENA_WIDTH, ARENA_HEIGHT, GRAY);
-  DrawCircleV(Vector2{ .x = Position.X, .y = Position.Y }, Player.Transform.Radius, BLUE);
+  for (entity &Entity : State.World.Entities) {
+    vec2 Position = Vec2Lerp(Entity.Transform.PrevPosition, Entity.Transform.CurrPosition, LoopAlpha(State.LoopState));
+    DrawCircleV(Vector2{ .x = Position.X, .y = Position.Y }, Entity.Transform.Radius, Entity.Health.Hp > 0 ? BLUE : RED);
+  }
   for (projectile &Item : State.World.Projectiles.Items) {
     if (!Item.Active) { continue; }
     vec2 ItemPosition = Vec2Lerp(Item.PrevPosition, Item.CurrPosition, LoopAlpha(State.LoopState));
@@ -79,7 +91,8 @@ int main()
   InitApp(&AppDef);
 
   frame_state State;
-  world_def WorldDef = { .Width = ARENA_WIDTH, .Height = ARENA_HEIGHT };
+
+  world_def WorldDef = { .Width = ARENA_WIDTH, .Height = ARENA_HEIGHT, .PlayerCount = PLAYER_COUNT };
   InitWorld(&WorldDef, State.World);
   State.Commands.reserve(MAX_COMMANDS);
 #if defined(PT_PLATFORM_WEB)

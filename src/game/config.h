@@ -20,5 +20,10 @@ constexpr float PROJECTILE_LIFESPAN = 1.5F;
 
 constexpr float FIRE_COOLDOWN = 0.14F;
 
+constexpr float BLEED_OUT_TIME = 15.F;
+constexpr float REVIVE_TIME = 2.F;
+constexpr float REVIVE_RANGE = 48.F;
+
 constexpr int MAX_ENTITIES = 64;
 constexpr int MAX_PROJECTILES = 256;
+constexpr int MAX_PLAYERS = 4;

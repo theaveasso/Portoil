@@ -15,4 +15,4 @@ struct input_frame
 };
 
 void GatherInput(input_frame &Input, const Camera2D &Camera, const vec2 &PlayerPosition);
-void TakeTickCommands(input_frame &Input, std::vector<command> &Out);
+void TakeTickCommands(input_frame &Input, int PlayerIndex, std::vector<command> &Out);

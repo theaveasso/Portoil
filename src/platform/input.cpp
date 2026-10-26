@@ -15,18 +15,19 @@ void GatherInput(input_frame &Input, const Camera2D &Camera, const vec2 &PlayerP
   Input.HurtPressed |= IsKeyPressed(KEY_H);
 }
 
-void TakeTickCommands(input_frame &Input, std::vector<command> &Out)
+void TakeTickCommands(input_frame &Input, int PlayerIndex, std::vector<command> &Out)
 {
-  Out.clear();
-  Out.push_back({ .Type = command_type::MOVE, .Direction = Input.Move });
-  if (Vec2Length(Input.Aim) > PLAYER_RADIUS) { Out.push_back({ .Type = command_type::AIM, .Direction = Input.Aim }); }
-  if (Input.Fire) { Out.push_back({ .Type = command_type::FIRE }); }
+  Out.push_back({ .PlayerIndex = static_cast<uint8_t>(PlayerIndex), .Type = command_type::MOVE, .Direction = Input.Move });
+  if (Vec2Length(Input.Aim) > PLAYER_RADIUS) {
+    Out.push_back({ .PlayerIndex = static_cast<uint8_t>(PlayerIndex), .Type = command_type::AIM, .Direction = Input.Aim });
+  }
+  if (Input.Fire) { Out.push_back({ .PlayerIndex = static_cast<uint8_t>(PlayerIndex), .Type = command_type::FIRE }); }
   if (Input.DashPressed) {
-    Out.push_back({ .Type = command_type::DASH });
+    Out.push_back({ .PlayerIndex = static_cast<uint8_t>(PlayerIndex), .Type = command_type::DASH });
     Input.DashPressed = false;
   }
   if (Input.HurtPressed) {
-    Out.push_back({ .Type = command_type::DEBUG_HURT });
+    Out.push_back({ .PlayerIndex = static_cast<uint8_t>(PlayerIndex), .Type = command_type::DEBUG_HURT });
     Input.HurtPressed = false;
   }
 }
