@@ -2,6 +2,7 @@
 
 #include "command.h"
 #include "entity.h"
+#include "projectile.h"
 #include "pt_math.h"
 #include <cstdint>
 #include <span>
@@ -11,6 +12,7 @@ struct world
 {
   rect Arena;
   std::vector<entity> Entities;
+  projectile_pool Projectiles;
   int PlayerIndex = -1;
   uint64_t Tick = 0;
 };

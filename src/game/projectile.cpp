@@ -16,7 +16,7 @@ void InitProjectilePool(projectile_pool &Pool)
   Pool.ActiveCount = 0;
 }
 
-int SpawnProjectile(projectile_pool &Pool, vec2 Position, vec2 Velocity)
+int SpawnProjectile(projectile_pool &Pool, const vec2 &Position, const vec2 &Velocity)
 {
   const int Result = Pool.FirstFree;
   if (Result == -1) { return -1; }

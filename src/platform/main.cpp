@@ -28,7 +28,7 @@ struct frame_state
   float SecondTimer = 0;
 };
 
-static Camera2D ArenaCamera()
+static Camera2D GetCamera()
 {
   Camera2D Result = {};
   Result.zoom = Min(static_cast<float>(GetScreenWidth()) / ARENA_WIDTH, static_cast<float>(GetScreenHeight()) / ARENA_HEIGHT);
@@ -53,17 +53,22 @@ static void UpdateDrawFrame(void *Args)
     State.TickCounted = 0;
     State.SecondTimer -= 1;
   }
-  GatherInput(State.Input);
+  entity &Player = State.World.Entities[State.World.PlayerIndex];
+  GatherInput(State.Input, GetCamera(), Player.Transform.CurrPosition);
   for (int Index = 0; Index < Tick; ++Index) {
     TakeTickCommands(State.Input, State.Commands);
     TickWorld(State.World, State.Commands);
   }
-  entity &Player = State.World.Entities[State.World.PlayerIndex];
   vec2 Position = Vec2Lerp(Player.Transform.PrevPosition, Player.Transform.CurrPosition, LoopAlpha(State.LoopState));
 
-  BeginMode2D(ArenaCamera());
+  BeginMode2D(GetCamera());
   DrawRectangleLines(0, 0, ARENA_WIDTH, ARENA_HEIGHT, GRAY);
   DrawCircleV(Vector2{ .x = Position.X, .y = Position.Y }, Player.Transform.Radius, BLUE);
+  for (projectile &Item : State.World.Projectiles.Items) {
+    if (!Item.Active) { continue; }
+    vec2 ItemPosition = Vec2Lerp(Item.PrevPosition, Item.CurrPosition, LoopAlpha(State.LoopState));
+    DrawCircleV(Vector2{ .x = ItemPosition.X, .y = ItemPosition.Y }, PROJECTILE_RADIUS, RED);
+  }
   EndMode2D();
   EndDrawing();
 }

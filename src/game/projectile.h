@@ -22,6 +22,6 @@ struct projectile_pool
 };
 
 void InitProjectilePool(projectile_pool &Pool);
-int SpawnProjectile(projectile_pool &Pool, vec2 Position, vec2 Velocity);
+int SpawnProjectile(projectile_pool &Pool, const vec2 &Position, const vec2 &Velocity);
 void FreeProjectile(projectile_pool &Pool, int Index);
 void UpdateProjectiles(projectile_pool &Pool, const rect &Arena, float Deltatime);

@@ -45,7 +45,7 @@ struct shooter
 {
   vec2 AimDir;
   bool Firing = false;
-  float FireRate = 0;
+  float FireCooldown = 0;
   float CooldownTimer = 0;
   float BulletSpeed = 0;
 };
