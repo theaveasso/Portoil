@@ -11,3 +11,4 @@ enum player_state : int {
 
 entity CreatePlayer(vec2 Position);
 void UpdatePlayer(world &World, entity &Player, float Deltatime);
+bool DamagePlayer(entity &Player, int Amount);

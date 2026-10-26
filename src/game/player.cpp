@@ -82,8 +82,19 @@ static void TryFire(world &World, entity &Entity)
   Shooter.CooldownTimer = Shooter.FireCooldown;
 }
 
+bool DamagePlayer(entity &Player, int Amount)
+{
+  if (Player.State == PLAYER_STATE_DOWNED || Player.State == PLAYER_STATE_DASHING || Player.Health.InvulnTimer > 0) { return false; }
+  Player.Health.Hp = Max((Player.Health.Hp - Amount), 0);
+  Player.Health.InvulnTimer = PLAYER_INVULN_WINDOW;
+  if (Player.Health.Hp <= 0) { Player.NextState = PLAYER_STATE_DOWNED; }
+
+  return true;
+}
+
 static void UpdateAlive(world &World, entity &Player, float Deltatime)
 {
+  if (Player.Health.Hp <= 0) { return; }
   vec2 Direction = Vec2Length(Player.Mover.Intent) > 1 ? Vec2Normalize(Player.Mover.Intent) : Player.Mover.Intent;
   vec2 Velocity = Vec2Mul(Direction, Player.Mover.Speed);
   MoveClamp(World, Player, Velocity, Deltatime);
@@ -100,6 +111,7 @@ static void EnterDashing(world & /*World*/, entity &Player)
 
 static void UpdateDashing(world &World, entity &Player, float Deltatime)
 {
+  if (Player.Health.Hp <= 0) { return; }
   const float Speed = Player.Dasher.Speed * 2 * (1.0F - Min(Player.StateTimer / DASH_DURATION, 1.0F));
   const vec2 Velocity = Vec2Mul(Player.Dasher.Direction, Speed);
   MoveClamp(World, Player, Velocity, Deltatime);

@@ -46,6 +46,9 @@ void ApplyCommand(world &World, const command &Command)
   case command_type::DASH:
     World.Entities[World.PlayerIndex].Dasher.Requested = true;
     break;
+  case command_type::DEBUG_HURT:
+    DamagePlayer(World.Entities[World.PlayerIndex], 1);
+    break;
   default:
     break;
   }
