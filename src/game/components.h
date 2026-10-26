@@ -27,9 +27,10 @@ struct mover
 
 struct dasher
 {
+  bool Requested = false;
   vec2 Direction;
-  float Speed = PLAYER_SPEED;
-  float Cooldown = PLAYER_SKILL_COOLDOWN;
+  float Speed = 0;
+  float Cooldown = 0;
   float Timer = 0;
   float CooldownTimer = 0;
 };

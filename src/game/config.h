@@ -9,8 +9,9 @@ constexpr float PLAYER_SKILL_COOLDOWN = 5;
 constexpr int PLAYER_MAX_HEALTH = 3;
 constexpr float PLAYER_INVULN_WINDOW = 1;
 
-constexpr float DASH_SPEED = 1100;
-constexpr float DASH_DURATION = 0.15F;
+constexpr float DASH_DISTANCE = 110;
+constexpr float DASH_DURATION = 0.09F;
+constexpr float DASH_SPEED = DASH_DISTANCE / DASH_DURATION;
 constexpr float DASH_COOLDOWN = 0.6F;
 
 constexpr float PROJECTILE_SPEED = 600.F;

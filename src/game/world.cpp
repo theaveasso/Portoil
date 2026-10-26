@@ -19,6 +19,8 @@ void TickWorld(world &World, std::span<const command> Commands)
 {
   World.Entities[World.PlayerIndex].Mover.Intent = {};
   World.Entities[World.PlayerIndex].Shooter.Firing = false;
+  World.Entities[World.PlayerIndex].Dasher.Requested = false;
+
   for (const command &Command : Commands) { ApplyCommand(World, Command); }
   for (entity &Entity : World.Entities) {
     Entity.Transform.PrevPosition = Entity.Transform.CurrPosition;
@@ -40,6 +42,9 @@ void ApplyCommand(world &World, const command &Command)
     break;
   case command_type::FIRE:
     World.Entities[World.PlayerIndex].Shooter.Firing = true;
+    break;
+  case command_type::DASH:
+    World.Entities[World.PlayerIndex].Dasher.Requested = true;
     break;
   default:
     break;
