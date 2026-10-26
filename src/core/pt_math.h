@@ -2,6 +2,10 @@
 
 #include <cmath>
 
+template<typename T> T Min(T Value1, T Value2) { return Value1 < Value2 ? Value1 : Value2; }
+
+template<typename T> T Max(T Value1, T Value2) { return Value1 > Value2 ? Value1 : Value2; }
+
 template<typename T> T Clamp(T Value, T Min, T Max)
 {
   T Result = Value;

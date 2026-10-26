@@ -1,5 +1,8 @@
 #pragma once
 
+constexpr int ARENA_WIDTH = 1280;
+constexpr int ARENA_HEIGHT = 720;
+
 constexpr float PLAYER_SPEED = 300;
 constexpr float PLAYER_RADIUS = 14;
 constexpr float PLAYER_SKILL_COOLDOWN = 5;

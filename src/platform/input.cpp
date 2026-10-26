@@ -24,6 +24,6 @@ void TakeTickCommands(input_frame &Input, std::vector<command> &Out)
   }
   if (Input.HurtPressed) {
     Out.push_back({ .Type = command_type::DEBUG_HURT });
-    Input.DashPressed = false;
+    Input.HurtPressed = false;
   }
 }
