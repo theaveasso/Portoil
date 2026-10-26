@@ -32,7 +32,12 @@ inline vec2 Vec2Div(const vec2 &Vec, float Scalar) { return vec2{ .X = Vec.X / S
 
 inline vec2 Vec2Lerp(const vec2 &Vec1, const vec2 &Vec2, float Amount) { return vec2{ .X = Lerp(Vec1.X, Vec2.X, Amount), .Y = Lerp(Vec1.Y, Vec2.Y, Amount) }; }
 
-inline float Vec2Length(const vec2 &Vec) { return std::sqrt((Vec.X * Vec.X) + (Vec.Y * Vec.Y)); }
+inline float Vec2LengthSq(const vec2 &Vec) { return (Vec.X * Vec.X) + (Vec.Y * Vec.Y); }
+
+inline float Vec2Length(const vec2 &Vec) { return std::sqrt(Vec2LengthSq(Vec)); }
+
+
+inline float Vec2Dot(const vec2 &Vec1, const vec2 &Vec2) { return (Vec1.X * Vec2.X) + (Vec1.Y * Vec2.Y); }
 
 inline vec2 Vec2Normalize(const vec2 &Vec)
 {

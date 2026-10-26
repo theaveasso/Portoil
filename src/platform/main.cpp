@@ -10,7 +10,7 @@
 #include "input.h"
 #include "loop.h"
 #include "pt_math.h"
-#include "sprite_atlas.h"
+// #include "sprite_atlas.h"
 #include "world.h"
 #include <cassert>
 
@@ -92,6 +92,11 @@ static void UpdateDrawFrame(void *Args)
     if (!Item.Active) { continue; }
     vec2 ItemPosition = Vec2Lerp(Item.PrevPosition, Item.CurrPosition, LoopAlpha(State.LoopState));
     DrawCircleV(Vector2{ .x = ItemPosition.X, .y = ItemPosition.Y }, PROJECTILE_RADIUS, RED);
+  }
+  for (enemy &Item : State.World.Enemies.Items) {
+    if (!Item.Active) { continue; }
+    vec2 ItemPosition = Vec2Lerp(Item.Transform.PrevPosition, Item.Transform.CurrPosition, LoopAlpha(State.LoopState));
+    DrawCircleV(Vector2{ .x = ItemPosition.X, .y = ItemPosition.Y }, Item.Transform.Radius, GREEN);
   }
 
   DrawCircleV(Vector2{ .x = State.World.Hearth.Position.X, .y = State.World.Hearth.Position.Y }, 50, YELLOW);

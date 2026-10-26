@@ -1,6 +1,7 @@
 #pragma once
 
 #include "command.h"
+#include "enemy.h"
 #include "entity.h"
 #include "projectile.h"
 #include "pt_math.h"
@@ -23,6 +24,8 @@ struct world
   hearth Hearth;
   std::vector<entity> Entities;
   projectile_pool Projectiles;
+  enemy_pool Enemies;
+  float EnemySpawnTimer = 0;
   int PlayerCount = 0;
   uint64_t Tick = 0;
 };

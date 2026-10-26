@@ -16,13 +16,13 @@ struct transform
 {
   vec2 PrevPosition;
   vec2 CurrPosition;
-  float Radius = PLAYER_RADIUS;
+  float Radius = 0;
 };
 
 struct mover
 {
   vec2 Intent;
-  float Speed = PLAYER_SPEED;
+  float Speed = 0;
 };
 
 struct dasher

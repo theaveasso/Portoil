@@ -30,3 +30,4 @@ constexpr float HEARTH_RADIUS = 22.F;
 constexpr int MAX_ENTITIES = 64;
 constexpr int MAX_PROJECTILES = 256;
 constexpr int MAX_PLAYERS = 4;
+constexpr int MAX_ENEMIES = 32;
