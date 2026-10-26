@@ -31,7 +31,6 @@ struct dasher
   vec2 Direction;
   float Speed = 0;
   float Cooldown = 0;
-  float Timer = 0;
   float CooldownTimer = 0;
 };
 
@@ -46,7 +45,7 @@ struct shooter
 {
   vec2 AimDir;
   bool Firing = false;
-  float FireCooldown = 0;
-  float CooldownTimer = 0;
   float BulletSpeed = 0;
+  float Cooldown = 0;
+  float CooldownTimer = 0;
 };

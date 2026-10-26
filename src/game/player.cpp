@@ -38,7 +38,7 @@ entity CreatePlayer(vec2 Position)
   Result.Mover = { .Speed = PLAYER_SPEED };
   Result.Dasher = { .Speed = DASH_SPEED, .Cooldown = DASH_COOLDOWN };
   Result.Health = { .Hp = PLAYER_MAX_HEALTH, .MaxHp = PLAYER_MAX_HEALTH, .InvulnTimer = PLAYER_INVULN_WINDOW };
-  Result.Shooter = { .AimDir = { .X = 1 }, .FireCooldown = FIRE_COOLDOWN, .BulletSpeed = PROJECTILE_SPEED };
+  Result.Shooter = { .AimDir = { .X = 1 }, .Cooldown = FIRE_COOLDOWN, .BulletSpeed = PROJECTILE_SPEED };
   Result.State = PLAYER_STATE_ALIVE;
   Result.NextState = PLAYER_STATE_ALIVE;
   Result.Update = UpdatePlayer;
@@ -79,7 +79,7 @@ static void TryFire(world &World, entity &Entity)
   vec2 SpawnPosition = Vec2Add(Entity.Transform.CurrPosition, Vec2Mul(Shooter.AimDir, Entity.Transform.Radius));
   vec2 SpawnVelocity = Vec2Mul(Shooter.AimDir, Shooter.BulletSpeed);
   SpawnProjectile(World.Projectiles, SpawnPosition, SpawnVelocity);
-  Shooter.CooldownTimer = Shooter.FireCooldown;
+  Shooter.CooldownTimer = Shooter.Cooldown;
 }
 
 bool DamagePlayer(entity &Player, int Amount)

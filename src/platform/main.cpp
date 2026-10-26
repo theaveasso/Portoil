@@ -4,12 +4,14 @@
 #include <vector>
 
 #include "app.h"
+#include "checksum.h"
 #include "command.h"
 #include "entity.h"
 #include "input.h"
 #include "loop.h"
 #include "pt_math.h"
 #include "world.h"
+#include <cassert>
 
 #if defined(PT_PLATFORM_WEB)
 #include <emscripten/emscripten.h>
@@ -27,6 +29,9 @@ struct frame_state
 {
   loop_state LoopState = {};
   world World = {};
+#if not defined(NDEBUG)
+  world Shadow = {};
+#endif
   input_frame Input = {};
   std::vector<command> Commands;
   int ControlledPlayer = 0;
@@ -68,6 +73,10 @@ static void UpdateDrawFrame(void *Args)
     State.Commands.clear();
     TakeTickCommands(State.Input, State.ControlledPlayer, State.Commands);
     TickWorld(State.World, State.Commands);
+#if not defined(NDEBUG)
+    TickWorld(State.Shadow, State.Commands);
+    assert(GetWorldChecksum(State.World) == GetWorldChecksum(State.Shadow));
+#endif
   }
 
   BeginMode2D(GetCamera());
@@ -93,7 +102,12 @@ int main()
   frame_state State;
 
   world_def WorldDef = { .Width = ARENA_WIDTH, .Height = ARENA_HEIGHT, .PlayerCount = PLAYER_COUNT };
+
   InitWorld(&WorldDef, State.World);
+#if not defined(NDEBUG)
+  InitWorld(&WorldDef, State.Shadow);
+#endif
+
   State.Commands.reserve(MAX_COMMANDS);
 #if defined(PT_PLATFORM_WEB)
   emscripten_set_main_loop_arg(UpdateDrawFrame, &State, 0, true);
