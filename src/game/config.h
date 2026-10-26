@@ -7,7 +7,7 @@ constexpr int PLAYER_MAX_HEALTH = 3;
 constexpr float PLAYER_INVULN_WINDOW = 1;
 
 constexpr float DASH_SPEED = 1100;
-constexpr float DASH_DURATION = 0.15;
-constexpr float DASH_COOLDOWN = 0.6;
+constexpr float DASH_DURATION = 0.15F;
+constexpr float DASH_COOLDOWN = 0.6F;
 
 constexpr int MAX_ENTITIES = 64;

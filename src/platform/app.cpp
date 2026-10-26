@@ -1,13 +1,10 @@
 #include "app.h"
-#include "pt_math.h"
 
 #include <cassert>
 #include <raylib.h>
 
 struct app
-{
-  bool IsInitialized = false;
-};
+{ bool IsInitialized = false; };
 
 static app &GetApp()
 {

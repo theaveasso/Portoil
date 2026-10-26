@@ -1,16 +1,15 @@
 #include <cstdlib>
 
 #include <raylib.h>
-#include <string>
 #include <vector>
 
 #include "app.h"
-#include "core/loop.h"
-#include "game/command.h"
-#include "game/entity.h"
-#include "game/world.h"
-#include "platform/input.h"
+#include "command.h"
+#include "entity.h"
+#include "input.h"
+#include "loop.h"
 #include "pt_math.h"
+#include "world.h"
 
 #if defined(PT_PLATFORM_WEB)
 #include <emscripten/emscripten.h>
@@ -51,7 +50,6 @@ static void UpdateDrawFrame(void *Args)
   entity &Player = State.World.Entities[State.World.PlayerIndex];
   vec2 Position = Vec2Lerp(Player.Transform.PrevPosition, Player.Transform.CurrPosition, LoopAlpha(State.LoopState));
   DrawCircleV(Vector2{ .x = Position.X, .y = Position.Y }, Player.Transform.Radius, BLUE);
-  DrawText(std::to_string(State.TickPerSecond).c_str(), 10, 10, 50, WHITE);
   EndDrawing();
 }
 

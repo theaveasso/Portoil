@@ -2,6 +2,7 @@
 
 #include "components.h"
 #include <cstdint>
+
 struct world;
 struct entity;
 

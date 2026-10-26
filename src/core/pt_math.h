@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cmath>
+
 template<typename T> T Clamp(T Value, T Min, T Max)
 {
   T Result = Value;
@@ -11,7 +12,8 @@ template<typename T> T Clamp(T Value, T Min, T Max)
 
 struct vec2
 {
-  float X = 0, Y = 0;
+  float X = 0;
+  float Y = 0;
 };
 
 inline float Lerp(float Value1, float Value2, float Amount) { return Value1 + (Amount * (Value2 - Value1)); }

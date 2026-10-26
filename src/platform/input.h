@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/command.h"
+#include "command.h"
 #include "pt_math.h"
 #include <vector>
 
