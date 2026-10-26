@@ -13,4 +13,9 @@ constexpr float DASH_SPEED = 1100;
 constexpr float DASH_DURATION = 0.15F;
 constexpr float DASH_COOLDOWN = 0.6F;
 
+constexpr float PROJECTILE_SPEED = 256.F;
+constexpr float PROJECTILE_RADIUS = 4.F;
+constexpr float PROJECTILE_LIFESPAN = 1.5F;
+
 constexpr int MAX_ENTITIES = 64;
+constexpr int MAX_PROJECTILES = 256;
